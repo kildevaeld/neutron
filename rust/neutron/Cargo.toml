@@ -1,0 +1,12 @@
+[package]
+name = "neutron"
+version = "0.1.0"
+authors = ["Rasmus Kildevæld <rasmuskildevaeld@gmail.com>"]
+edition = "2018"
+
+
+
+[dependencies]
+neutron_sys = { path = "../neutron_sys" }
+typemap = "^0.3"
+url = "^1.7"

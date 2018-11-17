@@ -1,0 +1,7 @@
+[workspace]
+
+members = [
+    "rust/neutron_sys",
+    "rust/neutron",
+    "rust/neu"
+]
