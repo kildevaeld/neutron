@@ -28,8 +28,6 @@ fn main() {
 
                 win.listen(WindowEvent::DidClose, |win, _| {
                     println!("Window did close");
-
-                    
                     win.app().borrow().terminate();
                 });
             });

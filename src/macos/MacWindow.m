@@ -9,8 +9,8 @@
 #import "MacWindow.h"
 #import "WebViewController.h"
 #import "MacWindow.h"
-#include "win_p.h"
-//#include "EmbedSchemeHandler.h"
+#import "win_p.h"
+#import "EmbedSchemeHandler.h"
 
 @interface WebViewMessage() {
     vv_win_t *w;
@@ -89,13 +89,14 @@
     return self;
 }
 
-- (void)awakeFromNib {
-    for (id child in self.contentView.subviews) {
-        [child removeFromSuperview];
-    }
-    self->ctrl.webView.frame = self.contentView.bounds;
-    [self.contentView addSubview:self->ctrl.webView];
-}
+// - (void)awakeFromNib {
+//     NSLog(@"Awake from nib");
+//     for (id child in self.contentView.subviews) {
+//         [child removeFromSuperview];
+//     }
+//     self->ctrl.webView.frame = self.contentView.bounds;
+//     [self.contentView addSubview:self->ctrl.webView];
+// }
 
 
 - (void)commonInit:(NSRect)contentRect {
@@ -107,8 +108,8 @@
     
     WKUserScript *script = [[WKUserScript alloc] initWithSource:@"window.external = this; invoke = function(arg){ webkit.messageHandlers.channel.postMessage(arg); };" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:false];
     
-//    EmbedSchemeHandler *hld = [[EmbedSchemeHandler alloc] init:vv_win_app(self->w)];
-//    [cfg setURLSchemeHandler:hld forURLScheme:@"embed"];
+    EmbedSchemeHandler *hld = [[EmbedSchemeHandler alloc] init:vv_win_app(self->w)];
+    [cfg setURLSchemeHandler:hld forURLScheme:@"embed"];
     
     [user addUserScript:script];
     [user addScriptMessageHandler:msg name:@"channel"];

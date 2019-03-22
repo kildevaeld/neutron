@@ -6,6 +6,10 @@
 //  Copyright © 2018 Rasmus Kildevæld. All rights reserved.
 //
 
+#if ! __has_feature(objc_arc)
+///  #error "ARC is off"
+#endif
+
 #include <stdio.h>
 #include <neutron/app.h>
 #include "app_p.h"

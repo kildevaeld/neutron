@@ -12,7 +12,7 @@
 
 @interface WebViewMessage : NSObject <WKScriptMessageHandler>
 
-- (instancetype)init:(vv_win_t *)w;
+- (instancetype)init:(nonnull vv_win_t *)w;
 
 - (void)userContentController:(WKUserContentController *)userContentController
       didReceiveScriptMessage:(WKScriptMessage *)message;
@@ -30,7 +30,7 @@
 
 - (instancetype)initWith:(vv_win_t *)win andContentRect:(NSRect)rect;
 
-- (void)windowWillClose:(NSNotification *)notification;
+- (void)windowWillClose:(nonnull NSNotification *)notification;
 
 - (void)setListener:(id<WindowEventHandler>)handler;
 

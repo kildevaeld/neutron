@@ -1,5 +1,6 @@
 extern crate bindgen;
 extern crate cc;
+extern crate cmake;
 
 use std::env;
 use std::path::{Path, PathBuf};
@@ -28,40 +29,55 @@ fn main() {
     //     .opt_level(2)
     //     .compile("libduktape.a");
 
-    let mut build = cc::Build::new();
 
-    if env::var("DEBUG").is_err() {
-        build.define("NDEBUG", None);
-    } else {
-        build.define("DEBUG", None);
-    }
+    let dest = cmake::Config::new("../../").build();
+
+    println!("cargo:rustc-link-search=native={}", dest.join("lib").display());
+    println!("cargo:rustc-link-lib=static=neutron");
 
     let target = env::var("TARGET").unwrap();
 
-    let ip = Path::new("../../include");
-
-    build.include(ip);
-    build.files(vec!["../../src/utils.c", "../../src/win-list.c"]);
-
     if target.contains("apple") {
-        build
-            .define("WEBVIEW_COCOA", None)
-            .flag("-x")
-            .flag("objective-c")
-            .files(vec![
-                "../../src/macos/app.m",
-                "../../src/macos/AppDelegate.m",
-                "../../src/macos/ApplicationMessageHandler.m",
-                //"macos/EmbedSchemeHandler.m",
-                "../../src/macos/MacWindow.m",
-                "../../src/macos/WebViewController.m",
-                "../../src/macos/win.m",
-            ]);
         println!("cargo:rustc-link-lib=framework=Cocoa");
         println!("cargo:rustc-link-lib=framework=WebKit");
     } else {
         panic!("unsupported target");
     }
 
-    build.compile("neutron");
+    // let mut build = cc::Build::new();
+
+    // if env::var("DEBUG").is_err() {
+    //     build.define("NDEBUG", None);
+    // } else {
+    //     build.define("DEBUG", None);
+    // }
+
+    // let target = env::var("TARGET").unwrap();
+
+    // let ip = Path::new("../../include");
+
+    // build.include(ip);
+    // build.files(vec!["../../src/utils.c", "../../src/win-list.c"]);
+
+    // if target.contains("apple") {
+    //     build
+    //         .define("WEBVIEW_COCOA", None)
+    //         .flag("-x")
+    //         .flag("objective-c")
+    //         .files(vec![
+    //             "../../src/macos/app.m",
+    //             "../../src/macos/AppDelegate.m",
+    //             "../../src/macos/ApplicationMessageHandler.m",
+    //             "../../src/macos/EmbedSchemeHandler.m",
+    //             "../../src/macos/MacWindow.m",
+    //             "../../src/macos/WebViewController.m",
+    //             "../../src/macos/win.m",
+    //         ]);
+    //     println!("cargo:rustc-link-lib=framework=Cocoa");
+    //     println!("cargo:rustc-link-lib=framework=WebKit");
+    // } else {
+    //     panic!("unsupported target");
+    // }
+
+    // build.compile("neutron");
 }
